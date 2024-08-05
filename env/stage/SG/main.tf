@@ -146,6 +146,20 @@ module "RDS_SG" {
       protocol    = local.tcp_protocol
       description = "DB Port Allow"
       cidr_blocks = data.terraform_remote_state.vpc.outputs.database_subnets[1]
+    },
+    {
+      from_port   = local.db_port
+      to_port     = local.db_port
+      protocol    = local.tcp_protocol
+      description = "DB Port Allow"
+      cidr_blocks = data.terraform_remote_state.vpc.outputs.private_subnets[0]
+    },
+    {
+      from_port   = local.db_port
+      to_port     = local.db_port
+      protocol    = local.tcp_protocol
+      description = "DB Port Allow"
+      cidr_blocks = data.terraform_remote_state.vpc.outputs.private_subnets[1]
     }
   ]
 
@@ -182,6 +196,20 @@ module "REDIS_SG" {
       protocol    = local.tcp_protocol
       description = "REDIS Port Allow"
       cidr_blocks = "192.168.40.0/24"
+    },
+    {
+      from_port   = local.redis_port
+      to_port     = local.redis_port
+      protocol    = local.tcp_protocol
+      description = "REDIS Port Allow"
+      cidr_blocks = data.terraform_remote_state.vpc.outputs.private_subnets[0]
+    },
+    {
+      from_port   = local.redis_port
+      to_port     = local.redis_port
+      protocol    = local.tcp_protocol
+      description = "REDIS Port Allow"
+      cidr_blocks = data.terraform_remote_state.vpc.outputs.private_subnets[1]
     }
   ]
 
@@ -241,14 +269,14 @@ module "EFS_SG" {
       from_port   = local.efs_port
       to_port     = local.efs_port
       protocol    = local.tcp_protocol
-      description = "REDIS Port Allow"
+      description = "EFS Port Allow"
       cidr_blocks = "192.168.10.0/24"
     },
     {
       from_port   = local.efs_port
       to_port     = local.efs_port
       protocol    = local.tcp_protocol
-      description = "REDIS Port Allow"
+      description = "EFS Port Allow"
       cidr_blocks = "192.168.20.0/24"
     }
   ]
