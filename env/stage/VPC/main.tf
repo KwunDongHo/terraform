@@ -50,6 +50,6 @@ module "stage_vpc" {
 
   public_subnet_tags = {
   "kubernetes.io/role/elb"       = 1
-  "kubernetes.io/cluster/my-eks" = "shared"
+  "kubernetes.io/cluster/sportlink" = "shared"
   }
 }
