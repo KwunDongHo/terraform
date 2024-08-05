@@ -1,21 +1,3 @@
-# variable "cluster_name" {
-#   description = "The name of the EKS cluster"
-#   type        = string
-#   default     = "my-eks"
-# }
-
-# variable "cluster_version" {
-#   description = "The version of the EKS cluster"
-#   type        = string
-#   default     = "1.27"
-# }
-
-# variable "cluster_admin" {
-#   description = "Cluster Admin IAM User Account ID"
-#   type        = string
-#   default     = "TerraformUser"
-# }
-
 locals {
   cluster_name    = "sportlink-eks"
   cluster_version = "1.30"

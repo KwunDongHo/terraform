@@ -33,6 +33,18 @@ data "terraform_remote_state" "vpc" {
   }
 }
 
+data "terraform_remote_state" "EKS" {
+  backend = "s3"
+  config = {
+    bucket         = "sportslink-terraform-project"
+    key            = "Stage/EKS/terraform.tfstate"
+    region         = "ap-northeast-2"
+    profile        = "terraform_user"
+    dynamodb_table = "sportslink-terraform-project"
+    encrypt        = true
+  }
+}
+
 data "terraform_remote_state" "sg" {
   backend = "s3"
   config = {
@@ -57,7 +69,8 @@ resource "aws_instance" "public1" {
   key_name                    = data.aws_key_pair.bastion.key_name
   subnet_id                   = data.terraform_remote_state.vpc.outputs.public_subnet_ids[0]
   associate_public_ip_address = true
-  vpc_security_group_ids      = [data.terraform_remote_state.sg.outputs.SSH_SG]
+  vpc_security_group_ids      = [data.terraform_remote_state.sg.outputs.SSH_SG, data.terraform_remote_state.EKS.outputs.eks_cluster_security_group_id]
+  depends_on                  = [data.terraform_remote_state.EKS]
   user_data                   = <<-EOF
               #!/bin/bash
               set -e
@@ -105,24 +118,14 @@ resource "aws_instance" "public1" {
   }
 }
 
-# # BastionHost EIP for Instance 1
-# resource "aws_eip" "public1_eip" {
-#   instance = aws_instance.public1.id
-#   tags = {
-#     Name = "public1_eip"
-#   }
-
-#   depends_on = [aws_instance.public1]
-# }
-
-# BastionHost Instance 2
 resource "aws_instance" "public2" {
   ami                         = "ami-0edc5427d49d09d2a"
   instance_type               = "t2.micro"
   key_name                    = data.aws_key_pair.bastion.key_name
   subnet_id                   = data.terraform_remote_state.vpc.outputs.public_subnet_ids[1]
   associate_public_ip_address = true
-  vpc_security_group_ids      = [data.terraform_remote_state.sg.outputs.SSH_SG]
+  vpc_security_group_ids      = [data.terraform_remote_state.sg.outputs.SSH_SG, data.terraform_remote_state.EKS.outputs.eks_cluster_security_group_id]
+  depends_on                  = [data.terraform_remote_state.EKS]
   user_data                   = <<-EOF
               #!/bin/bash
               set -e
@@ -169,13 +172,3 @@ resource "aws_instance" "public2" {
     Name = "sportlink_public2"
   }
 }
-
-# # BastionHost EIP for Instance 2
-# resource "aws_eip" "public2_eip" {
-#   instance = aws_instance.public2.id
-#   tags = {
-#     Name = "public2_eip"
-#   }
-
-#   depends_on = [aws_instance.public2]
-# }
