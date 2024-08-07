@@ -1,7 +1,7 @@
 terraform {
   backend "s3" {
     bucket         = "sportslink-terraform-project"
-    key            = "Stage/Bastion/terraform.tfstate"
+    key            = "Prod/Bastion/terraform.tfstate"
     region         = "ap-northeast-2"
     profile        = "terraform_user"
     dynamodb_table = "sportslink-terraform-project"
@@ -25,7 +25,7 @@ data "terraform_remote_state" "vpc" {
   backend = "s3"
   config = {
     bucket         = "sportslink-terraform-project"
-    key            = "Stage/VPC/terraform.tfstate"
+    key            = "Prod/VPC/terraform.tfstate"
     region         = "ap-northeast-2"
     profile        = "terraform_user"
     dynamodb_table = "sportslink-terraform-project"
@@ -37,7 +37,7 @@ data "terraform_remote_state" "EKS" {
   backend = "s3"
   config = {
     bucket         = "sportslink-terraform-project"
-    key            = "Stage/EKS/terraform.tfstate"
+    key            = "Prod/EKS/terraform.tfstate"
     region         = "ap-northeast-2"
     profile        = "terraform_user"
     dynamodb_table = "sportslink-terraform-project"
@@ -49,7 +49,7 @@ data "terraform_remote_state" "sg" {
   backend = "s3"
   config = {
     bucket         = "sportslink-terraform-project"
-    key            = "Stage/SG/terraform.tfstate"
+    key            = "Prod/SG/terraform.tfstate"
     region         = "ap-northeast-2"
     profile        = "terraform_user"
     dynamodb_table = "sportslink-terraform-project"
@@ -63,7 +63,7 @@ data "aws_key_pair" "bastion" {
 }
 
 # BastionHost Instance 1
-resource "aws_instance" "public1" {
+resource "aws_instance" "Prod_public1" {
   ami                         = "ami-0edc5427d49d09d2a"
   instance_type               = "t2.micro"
   key_name                    = data.aws_key_pair.bastion.key_name
@@ -114,11 +114,11 @@ resource "aws_instance" "public1" {
               fi
               EOF
   tags = {
-    Name = "sportlink_public1"
+    Name = "sportslink_public1"
   }
 }
 
-resource "aws_instance" "public2" {
+resource "aws_instance" "Prod_public2" {
   ami                         = "ami-0edc5427d49d09d2a"
   instance_type               = "t2.micro"
   key_name                    = data.aws_key_pair.bastion.key_name
@@ -169,6 +169,6 @@ resource "aws_instance" "public2" {
               fi
               EOF
   tags = {
-    Name = "sportlink_public2"
+    Name = "sportslink_public2"
   }
 }

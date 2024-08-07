@@ -1,7 +1,7 @@
 terraform {
   backend "s3" {
     bucket         = "sportslink-terraform-project"
-    key            = "Stage/SG/terraform.tfstate"
+    key            = "Prod/SG/terraform.tfstate"
     region         = "ap-northeast-2"
     profile        = "terraform_user"
     dynamodb_table = "sportslink-terraform-project"
@@ -25,7 +25,7 @@ data "terraform_remote_state" "vpc" {
   backend = "s3"
   config = {
     bucket         = "sportslink-terraform-project"
-    key            = "Stage/VPC/terraform.tfstate"
+    key            = "Prod/VPC/terraform.tfstate"
     region         = "ap-northeast-2"
     profile        = "terraform_user"
     dynamodb_table = "sportslink-terraform-project"
@@ -269,14 +269,14 @@ module "EFS_SG" {
       from_port   = local.efs_port
       to_port     = local.efs_port
       protocol    = local.tcp_protocol
-      description = "REDIS Port Allow"
+      description = "EFS Port Allow"
       cidr_blocks = "192.168.10.0/24"
     },
     {
       from_port   = local.efs_port
       to_port     = local.efs_port
       protocol    = local.tcp_protocol
-      description = "REDIS Port Allow"
+      description = "EFS Port Allow"
       cidr_blocks = "192.168.20.0/24"
     }
   ]

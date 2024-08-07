@@ -21,10 +21,10 @@ provider "aws" {
   profile = "terraform_user"
 }
 
-# Stage VPC
-module "stage_vpc" {
+# Prod VPC
+module "Prod_vpc" {
   source = "github.com/terraform-eks/terraform-aws-vpc"
-  name   = "stage_vpc"
+  name   = "Stage_vpc"
   cidr   = local.cidr
 
   azs                 = local.azs

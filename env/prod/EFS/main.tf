@@ -1,7 +1,7 @@
 terraform {
   backend "s3" {
     bucket         = "sportslink-terraform-project"
-    key            = "Stage/EFS/terraform.tfstate"
+    key            = "Prod/EFS/terraform.tfstate"
     region         = "ap-northeast-2"
     profile        = "terraform_user"
     dynamodb_table = "sportslink-terraform-project"
@@ -23,7 +23,7 @@ provider "aws" {
 module "efs" {
   source                = "terraform-aws-modules/efs/aws"
   version               = "1.6.3"
-  name                  = "sportlink-monitoring-log"
+  name                  = "sportlink-monitoring-logs"
   performance_mode      = "generalPurpose" # 성능 모드: generalPurpose(범용 모드), maxIO(최대 IO 모드)
   throughput_mode       = "bursting"       # 처리량 모드
   encrypted             = "true"           # 암호화 설정 
