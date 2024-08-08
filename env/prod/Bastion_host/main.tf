@@ -114,7 +114,7 @@ resource "aws_instance" "Prod_public1" {
               fi
               EOF
   tags = {
-    Name = "sportslink_public1"
+    Name = "Prod_sportslink_public1"
   }
 }
 
@@ -169,6 +169,6 @@ resource "aws_instance" "Prod_public2" {
               fi
               EOF
   tags = {
-    Name = "sportslink_public2"
+    Name = "Prod_sportslink_public2"
   }
 }
